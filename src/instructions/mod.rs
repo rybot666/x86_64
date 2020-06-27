@@ -14,7 +14,7 @@ pub mod tlb;
 pub fn hlt() {
     #[cfg(feature = "inline_asm")]
     unsafe {
-        llvm_asm!("hlt" :::: "volatile");
+        asm!("hlt", options(nomem, nostack));
     }
 
     #[cfg(not(feature = "inline_asm"))]
@@ -29,6 +29,6 @@ pub fn hlt() {
 #[inline]
 pub fn bochs_breakpoint() {
     unsafe {
-        llvm_asm!("xchgw %bx, %bx" :::: "volatile");
+        asm!("xchgw bx, bx", options(nomem, nostack));
     }
 }
